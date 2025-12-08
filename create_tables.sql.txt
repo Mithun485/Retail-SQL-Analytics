@@ -1,0 +1,50 @@
+-- Vendors Table
+CREATE TABLE vendors (
+    vendor_id INT PRIMARY KEY,
+    vendor_name VARCHAR(100),
+    region VARCHAR(50),
+    rating INT
+);
+
+-- Products Table
+CREATE TABLE products (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(100),
+    category VARCHAR(50),
+    cost_price DECIMAL(10,2),
+    selling_price DECIMAL(10,2),
+    vendor_id INT,
+    FOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id)
+);
+
+-- Inventory Table
+CREATE TABLE inventory (
+    product_id INT PRIMARY KEY,
+    stock_on_hand INT,
+    reorder_level INT,
+    last_restock_date DATE,
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+-- Sales Table
+CREATE TABLE sales (
+    sale_id INT PRIMARY KEY,
+    product_id INT,
+    sale_date DATE,
+    quantity INT,
+    unit_price DECIMAL(10,2),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+-- Purchase Orders Table
+CREATE TABLE purchase_orders (
+    po_id INT PRIMARY KEY,
+    product_id INT,
+    vendor_id INT,
+    po_date DATE,
+    quantity_ordered INT,
+    unit_cost DECIMAL(10,2),
+    expected_delivery_date DATE,
+    FOREIGN KEY (product_id) REFERENCES products(product_id),
+    FOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id)
+);
